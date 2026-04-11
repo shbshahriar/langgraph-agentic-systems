@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"# langgraph-agentic-systems\")",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
