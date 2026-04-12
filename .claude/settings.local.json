@@ -7,7 +7,20 @@
       "Bash(git branch:*)",
       "Bash(git remote:*)",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(uv run:*)",
+      "Bash(uv sync:*)",
+      "Bash(.venv/Scripts/uvicorn app:app --app-dir 02_langgraph_workflows/02_sequential_workflows/backend --reload)",
+      "Bash(uv add:*)",
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(curl -s http://127.0.0.1:8000/docs)",
+      "Bash(curl -s http://127.0.0.1:8000/openapi.json)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(list\\(d['paths'].keys\\(\\)\\)\\)\")",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //F //PID 19136)",
+      "Bash(taskkill //F //PID 6888)",
+      "Bash(cmd.exe /c \"taskkill /F /PID 6888 & taskkill /F /PID 19136\")",
+      "Bash(cmd.exe /c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -ano ^| findstr :8000 ^| findstr LISTENING'\\) do taskkill /F /PID %a\")"
     ]
   }
 }
