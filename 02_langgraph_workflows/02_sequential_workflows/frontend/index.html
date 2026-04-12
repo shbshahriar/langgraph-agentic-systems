@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Note Generator</title>
   <style>
+    /* ── Reset ──────────────────────────────────────────────────────────────
+       Remove default browser margins, padding, and ensure consistent sizing
+       across all elements using border-box. */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ── Page layout ────────────────────────────────────────────────────────
+       Dark background, centered content column, full viewport height. */
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
       background: #0f1117;
@@ -18,6 +23,8 @@
       padding: 48px 16px;
     }
 
+    /* ── Header ─────────────────────────────────────────────────────────────
+       Title with a purple gradient and a muted subtitle beneath it. */
     header {
       text-align: center;
       margin-bottom: 40px;
@@ -26,6 +33,7 @@
     header h1 {
       font-size: 2rem;
       font-weight: 700;
+      /* Gradient text: clipped to the text shape using background-clip */
       background: linear-gradient(135deg, #6366f1, #a855f7);
       background-clip: text;
       -webkit-background-clip: text;
@@ -38,6 +46,9 @@
       font-size: 0.95rem;
     }
 
+    /* ── Card ───────────────────────────────────────────────────────────────
+       The main container that holds the input and results. Max width keeps
+       it readable on wide screens. */
     .card {
       background: #1e2130;
       border: 1px solid #2d3148;
@@ -47,13 +58,15 @@
       max-width: 720px;
     }
 
+    /* ── Input row ──────────────────────────────────────────────────────────
+       Text field and button sit side by side using flexbox. */
     .input-group {
       display: flex;
       gap: 12px;
     }
 
     input[type="text"] {
-      flex: 1;
+      flex: 1;                  /* Takes all remaining space beside the button */
       background: #0f1117;
       border: 1px solid #2d3148;
       border-radius: 10px;
@@ -64,12 +77,13 @@
       transition: border-color 0.2s;
     }
 
-    input[type="text"]:focus {
-      border-color: #6366f1;
-    }
-
+    /* Highlight the input border when focused */
+    input[type="text"]:focus { border-color: #6366f1; }
     input[type="text"]::placeholder { color: #475569; }
 
+    /* ── Generate button ────────────────────────────────────────────────────
+       Gradient background matching the header. Fades on hover, greyed when
+       disabled (during the API call to prevent double submissions). */
     button {
       background: linear-gradient(135deg, #6366f1, #a855f7);
       color: #fff;
@@ -80,25 +94,31 @@
       font-weight: 600;
       cursor: pointer;
       transition: opacity 0.2s;
-      white-space: nowrap;
+      white-space: nowrap;    /* Prevent "Generate" from wrapping to two lines */
     }
 
-    button:hover { opacity: 0.85; }
+    button:hover    { opacity: 0.85; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    /* ── Loading spinner ────────────────────────────────────────────────────
+       A circular CSS spinner shown while the API request is in flight.
+       Hidden by default; shown via JS during the fetch call. */
     .spinner {
       display: none;
       margin: 32px auto 0;
       width: 36px;
       height: 36px;
       border: 3px solid #2d3148;
-      border-top-color: #6366f1;
+      border-top-color: #6366f1;  /* Only one side is coloured → creates spin effect */
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Results container ──────────────────────────────────────────────────
+       Hidden by default. JS removes the 'hidden' class once results arrive.
+       Three sections (outline, notes, summary) stacked vertically. */
     .results {
       display: none;
       margin-top: 32px;
@@ -109,6 +129,8 @@
 
     .results.hidden { display: none; }
 
+    /* ── Individual result section ──────────────────────────────────────────
+       Each section has a labelled header and a body for the content. */
     .section {
       background: #0f1117;
       border: 1px solid #2d3148;
@@ -125,15 +147,16 @@
       background: #161825;
     }
 
+    /* Coloured dot acting as a visual label for each section */
     .section-header .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
     }
 
-    .dot-outline  { background: #6366f1; }
-    .dot-notes    { background: #a855f7; }
-    .dot-summary  { background: #ec4899; }
+    .dot-outline  { background: #6366f1; }   /* Indigo for Outline */
+    .dot-notes    { background: #a855f7; }   /* Purple for Notes */
+    .dot-summary  { background: #ec4899; }   /* Pink for Summary */
 
     .section-header span {
       font-size: 0.8rem;
@@ -143,6 +166,8 @@
       color: #94a3b8;
     }
 
+    /* ── Section body ───────────────────────────────────────────────────────
+       Renders the markdown-converted HTML from the LLM response. */
     .section-body {
       padding: 16px;
       font-size: 0.95rem;
@@ -150,6 +175,7 @@
       color: #cbd5e1;
     }
 
+    /* Styles for HTML elements produced by renderMarkdown() */
     .section-body ul { padding-left: 20px; margin: 6px 0; }
     .section-body li { margin: 4px 0; }
     .section-body p  { margin: 6px 0; }
@@ -158,6 +184,8 @@
       margin: 12px 0 6px;
     }
 
+    /* ── Error box ──────────────────────────────────────────────────────────
+       Shown when the fetch request fails (network error, server error, etc.) */
     .error {
       display: none;
       margin-top: 20px;
@@ -177,16 +205,25 @@
     <p>Enter a topic and get a structured outline, detailed notes, and a summary.</p>
   </header>
 
+  <!-- ── Main card ──────────────────────────────────────────────────────── -->
   <div class="card">
+
+    <!-- Input row: text field + button -->
     <div class="input-group">
       <input type="text" id="topicInput" placeholder="e.g. Quantum Computing, The Roman Empire..." />
       <button id="generateBtn" onclick="generateNote()">Generate</button>
     </div>
 
+    <!-- Spinner: visible only while API call is in progress -->
     <div class="spinner" id="spinner"></div>
+
+    <!-- Error message: visible only when something goes wrong -->
     <div class="error" id="error"></div>
 
+    <!-- Results: hidden until the API returns successfully -->
     <div class="results hidden" id="results">
+
+      <!-- Outline section -->
       <div class="section">
         <div class="section-header">
           <div class="dot dot-outline"></div>
@@ -195,6 +232,7 @@
         <div class="section-body" id="outline"></div>
       </div>
 
+      <!-- Notes section -->
       <div class="section">
         <div class="section-header">
           <div class="dot dot-notes"></div>
@@ -203,6 +241,7 @@
         <div class="section-body" id="notes"></div>
       </div>
 
+      <!-- Summary section -->
       <div class="section">
         <div class="section-header">
           <div class="dot dot-summary"></div>
@@ -210,65 +249,112 @@
         </div>
         <div class="section-body" id="summary"></div>
       </div>
+
     </div>
   </div>
 
   <script>
+    // Relative URL — works regardless of which port the server runs on,
+    // because the frontend is served by the same FastAPI server as the API.
     const API_URL = '/generate_note';
 
+    /**
+     * renderMarkdown(text)
+     *
+     * Converts a subset of Markdown syntax to HTML so the LLM's formatted
+     * output is displayed properly instead of as raw symbols.
+     *
+     * Steps (in order):
+     *   1. Escape HTML special chars (&, <, >) to prevent XSS injection.
+     *   2. Convert **bold** → <strong>
+     *   3. Convert # / ## / ### headings → <h1> / <h2> / <h3>
+     *   4. Convert * bullet and 1. numbered list items → <li>
+     *   5. Wrap consecutive <li> elements in <ul>
+     *   6. Convert blank lines → paragraph breaks
+     *   7. Wrap remaining plain lines in <p>
+     */
     function renderMarkdown(text) {
       return text
+        // Step 1: Escape HTML characters first to avoid XSS
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        // Step 2: Bold — **text** → <strong>text</strong>
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // Step 3: Headings (### before ## before # to match longest first)
         .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-        .replace(/^\s*\*\s+(.+)$/gm, '<li>$1</li>')
+        .replace(/^## (.+)$/gm,  '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm,   '<h1>$1</h1>')
+        // Step 4: Bullet and numbered list items → <li>
+        .replace(/^\s*\*\s+(.+)$/gm,    '<li>$1</li>')
         .replace(/^\s*\d+\.\s+(.+)$/gm, '<li>$1</li>')
+        // Step 5: Wrap all <li> blocks in a <ul>
         .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        // Step 6: Double newlines → paragraph break
         .replace(/\n{2,}/g, '</p><p>')
+        // Step 7: Wrap any remaining plain-text lines in <p>
         .replace(/^(?!<[hul]|<\/[hul]|<li|<p)(.+)$/gm, '<p>$1</p>');
     }
 
+    /**
+     * generateNote()
+     *
+     * Called when the user clicks "Generate" or presses Enter.
+     * Sends the topic to the FastAPI backend, then renders the response.
+     *
+     * UI state transitions:
+     *   idle → loading (spinner on, button disabled, results hidden)
+     *        → success (results shown with rendered markdown)
+     *        → error   (error box shown with message)
+     *        → idle    (button re-enabled, spinner off)
+     */
     async function generateNote() {
       const topic = document.getElementById('topicInput').value.trim();
-      if (!topic) return;
+      if (!topic) return;  // Do nothing if the input is empty
 
+      // Grab UI elements
       const btn     = document.getElementById('generateBtn');
       const spinner = document.getElementById('spinner');
       const results = document.getElementById('results');
       const error   = document.getElementById('error');
 
-      btn.disabled = true;
-      spinner.style.display = 'block';
-      results.classList.add('hidden');
-      error.style.display = 'none';
+      // ── Enter loading state ───────────────────────────────────────────────
+      btn.disabled = true;              // Prevent double-clicks
+      spinner.style.display = 'block'; // Show spinner
+      results.classList.add('hidden'); // Hide previous results
+      error.style.display = 'none';    // Hide previous errors
 
       try {
+        // POST the topic to the backend API as JSON
         const res = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: topic }),
+          body: JSON.stringify({ text: topic }),  // Matches NoteRequest.text
         });
 
+        // Treat any non-2xx HTTP status as an error
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
 
-        const data = await res.json();
+        const data = await res.json();  // Parse the NoteResponse JSON
 
+        // Render each field through the markdown converter and inject into DOM
         document.getElementById('outline').innerHTML = renderMarkdown(data.outline);
         document.getElementById('notes').innerHTML   = renderMarkdown(data.notes);
         document.getElementById('summary').innerHTML = renderMarkdown(data.summary);
 
-        results.classList.remove('hidden');
+        results.classList.remove('hidden');  // Show the results panel
+
       } catch (err) {
-        error.textContent = err.message;
-        error.style.display = 'block';
+        // Show the error message (network failure, server error, etc.)
+        error.textContent    = err.message;
+        error.style.display  = 'block';
+
       } finally {
-        btn.disabled = false;
+        // Always reset the loading state regardless of success or failure
+        btn.disabled         = false;
         spinner.style.display = 'none';
       }
     }
 
+    // Allow the user to submit by pressing Enter in the input field
     document.getElementById('topicInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') generateNote();
     });
