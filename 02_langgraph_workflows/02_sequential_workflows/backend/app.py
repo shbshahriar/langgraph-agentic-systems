@@ -2,27 +2,44 @@
 # FastAPI application entry point.
 #
 # Responsibilities:
-#   1. Serve the frontend HTML file at GET /
-#   2. Expose the note generation API at POST /generate_note
+#   1. Load environment variables from .env (must happen before any LLM import)
+#   2. Serve the frontend HTML file at GET /
+#   3. Expose the note generation API at POST /generate_note
+#
+# Why load_dotenv() is called here (not in llm.py):
+#   Environment variables must be available before LangChain initialises its
+#   clients. Calling it once at startup — before importing workflow — ensures
+#   GOOGLE_API_KEY is set in time. Spreading load_dotenv() across modules
+#   risks it running too late or multiple times unnecessarily.
 #
 # How the frontend is served:
 #   FileResponse returns the index.html file directly from the server.
 #   This means you only need to run one server — no separate frontend server.
 #   Path(__file__).resolve() gives the absolute path of this file, then we
-#   navigate up two levels (.parent.parent) to reach the project root and
-#   into the 'frontend' folder.
+#   navigate up one level (.parent) to reach backend/, then up again (.parent)
+#   to reach 02_sequential_workflows/, and into the 'frontend' folder.
 #
 # Run the server with:
 #   uv run uvicorn app:app --app-dir 02_langgraph_workflows/02_sequential_workflows/backend
 # ──────────────────────────────────────────────────────────────────────────────
 
 from pathlib import Path
-from fastapi import FastAPI
+from dotenv import load_dotenv
+
+# Load .env before importing workflow, which triggers LLM client initialisation.
+# GOOGLE_API_KEY must be in the environment before ChatGoogleGenerativeAI is created.
+load_dotenv()
+
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from schemas import NoteRequest, NoteResponse
 from workflow import workflow
 
-app = FastAPI()
+app = FastAPI(
+    title="Note Generator",
+    version="1.0.0",
+    description="Generates a structured outline, detailed notes, and a summary for any topic using a LangGraph sequential workflow.",
+)
 
 # Resolve the absolute path to the frontend directory at startup.
 # Structure: backend/app.py → parent = backend/ → parent.parent = 02_sequential_workflows/
@@ -49,10 +66,18 @@ async def generate_note(request: NoteRequest):
       2. Pass it into the compiled LangGraph workflow as initial state
       3. The workflow runs: outline → notes → summary nodes sequentially
       4. Extract the results from the final state and return as NoteResponse
+
+    Raises:
+      HTTPException 500: if the workflow fails (e.g. API key error, LLM timeout)
     """
-    # Invoke the graph with only the required input key.
-    # The workflow fills in 'outline', 'notes', 'summary' as it runs.
-    result = workflow.invoke({'topic': request.text})
+    try:
+        # Invoke the graph with only the required input key.
+        # The workflow fills in 'outline', 'notes', 'summary' as it runs.
+        result = workflow.invoke({'topic': request.text})
+    except Exception as e:
+        # Catch any LLM or graph execution errors and return a clean 500
+        # response instead of leaking an internal traceback to the client.
+        raise HTTPException(status_code=500, detail=f"Workflow failed: {e}")
 
     return NoteResponse(
         outline=result['outline'],
