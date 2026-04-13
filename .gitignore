@@ -77,3 +77,8 @@ logs/
 *.cert
 *.p12
 secrets/
+
+# Planning & Claude internal docs
+PLAN.md
+CLAUDE.md
+.claude/

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAPE — Cricket Performance Intelligence Engine</title>
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- ── Top Nav (theme toggle) ─────────────────────────────────────────── -->
+    <nav class="top-nav">
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+        <span class="toggle-icon" id="toggleIcon">☀️</span>
+        <span id="toggleLabel">Light Mode</span>
+      </button>
+    </nav>
+
+    <!-- ── Header ─────────────────────────────────────────────────────────── -->
+    <header>
+      <div class="logo-row">
+        <span class="logo-icon">🏏</span>
+        <h1>CAPE</h1>
+      </div>
+      <p>Cricket Performance Intelligence Engine</p>
+      <div class="badge-row">
+        <span class="badge badge-indigo">Parallel Analytics</span>
+        <span class="badge badge-emerald">LangGraph</span>
+        <span class="badge badge-amber">AI Powered</span>
+      </div>
+    </header>
+
+    <!-- ── Input Card ─────────────────────────────────────────────────────── -->
+    <div class="card">
+
+      <div class="input-sections">
+
+        <!-- Batting Stats -->
+        <div class="input-section batting-section">
+          <div class="section-title">
+            <span class="icon">🏏</span>
+            <h2>Batting Stats</h2>
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="runs">Runs Scored</label>
+              <input type="number" id="runs" min="0" placeholder="e.g. 85" />
+            </div>
+            <div class="field">
+              <label for="balls">Balls Faced</label>
+              <input type="number" id="balls" min="1" placeholder="e.g. 62" />
+            </div>
+            <div class="field">
+              <label for="fours">Fours Hit</label>
+              <input type="number" id="fours" min="0" placeholder="e.g. 7" />
+            </div>
+            <div class="field">
+              <label for="sixes">Sixes Hit</label>
+              <input type="number" id="sixes" min="0" placeholder="e.g. 3" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bowling Stats -->
+        <div class="input-section bowling-section">
+          <div class="section-title">
+            <span class="icon">🎳</span>
+            <h2>Bowling Stats</h2>
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label for="overs">Overs Bowled</label>
+              <input type="number" id="overs" min="0.1" step="0.1" placeholder="e.g. 4.0" />
+            </div>
+            <div class="field">
+              <label for="runs_conceded">Runs Conceded</label>
+              <input type="number" id="runs_conceded" min="0" placeholder="e.g. 28" />
+            </div>
+            <div class="field">
+              <label for="wickets">Wickets Taken</label>
+              <input type="number" id="wickets" min="0" placeholder="e.g. 2" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Analyze Button -->
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyzePlayer()">
+        ⚡ Analyze Player
+      </button>
+
+      <!-- Error Box -->
+      <div class="error-box" id="errorBox"></div>
+
+    </div>
+
+    <!-- ── Spinner ─────────────────────────────────────────────────────────── -->
+    <div class="spinner-wrap" id="spinner">
+      <div class="cricket-ball"></div>
+      <p>Running parallel analysis pipelines...</p>
+    </div>
+
+    <!-- ── Results ─────────────────────────────────────────────────────────── -->
+    <div id="results">
+
+      <!-- Impact Score + Role -->
+      <div class="card score-role-row">
+
+        <div class="score-ring-wrap">
+          <div class="score-ring">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%"   stop-color="#6366f1" />
+                  <stop offset="50%"  stop-color="#0ea5e9" />
+                  <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+              </defs>
+              <circle class="ring-track" cx="70" cy="70" r="54" fill="none" stroke-width="10" />
+              <circle class="ring-fill"  cx="70" cy="70" r="54" fill="none" stroke-width="10" id="scoreArc" />
+            </svg>
+            <div class="score-center">
+              <span id="impactScoreNum">0</span>
+              <small>/ 100</small>
+            </div>
+          </div>
+          <span class="score-label">Impact Score</span>
+        </div>
+
+        <div class="role-block">
+          <span class="role-eyebrow">Player Classification</span>
+          <div class="role-badge" id="roleBadge">—</div>
+          <p class="role-desc" id="roleDesc"></p>
+        </div>
+
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+
+        <div class="metric-card batting-card">
+          <div class="metric-card-head">
+            <span class="icon">🏏</span>
+            <h3>Batting Analysis</h3>
+          </div>
+          <div class="metric-rows" id="battingRows"></div>
+          <div class="insight-box" id="battingInsight"></div>
+        </div>
+
+        <div class="metric-card bowling-card">
+          <div class="metric-card-head">
+            <span class="icon">🎳</span>
+            <h3>Bowling Analysis</h3>
+          </div>
+          <div class="metric-rows" id="bowlingRows"></div>
+          <div class="insight-box" id="bowlingInsight"></div>
+        </div>
+
+      </div>
+
+      <!-- AI Scouting Report -->
+      <div class="report-card">
+        <div class="report-head">
+          <span class="icon">🤖</span>
+          <h3>AI Scouting Report</h3>
+        </div>
+        <div class="report-body" id="finalReport"></div>
+      </div>
+
+    </div>
+    <!-- end #results -->
+
+  </div>
+  <!-- end .page-wrapper -->
+
+  <script src="/assets/main.js"></script>
+</body>
+</html>
