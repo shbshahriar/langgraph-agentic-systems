@@ -9,8 +9,7 @@ def batting_insight_prompt(metrics: dict) -> str:
     """
     return (
         f"You are a cricket analyst. Based on the following batting metrics, "
-        f"write a short structured evaluation in 3-4 sentences. "
-        f"Use plain text only — no markdown, no asterisks, no bold, no bullet points.\n\n"
+        f"write a short structured evaluation in 3-4 sentences using markdown (bold key terms, use bullet points if helpful).\n\n"
         f"Batting Metrics:\n"
         f"  Strike Rate       : {metrics.get('strike_rate', 'N/A')}\n"
         f"  Boundary Ratio    : {metrics.get('boundary_ratio', 'N/A')}\n"
@@ -25,8 +24,7 @@ def bowling_insight_prompt(metrics: dict) -> str:
     """
     return (
         f"You are a cricket analyst. Based on the following bowling metrics, "
-        f"write a short structured evaluation in 3-4 sentences. "
-        f"Use plain text only — no markdown, no asterisks, no bold, no bullet points.\n\n"
+        f"write a short structured evaluation in 3-4 sentences using markdown (bold key terms, use bullet points if helpful).\n\n"
         f"Bowling Metrics:\n"
         f"  Economy Rate       : {metrics.get('economy_rate', 'N/A')}\n"
         f"  Bowling Average    : {metrics.get('bowling_average', 'N/A')}\n"
@@ -46,9 +44,9 @@ def insight_generator_prompt(
     """
     return (
         f"You are a professional cricket scout. Generate a concise scouting report "
-        f"based on the data below. Include: strengths, weaknesses, recommended team role, "
-        f"and format suitability (T20 / ODI / Test). "
-        f"Use plain text only — no markdown, no asterisks, no bold, no bullet points.\n\n"
+        f"based on the data below. Structure it with markdown: use **bold** headers for "
+        f"Strengths, Weaknesses, Recommended Role, and Format Suitability. Use bullet points. "
+        f"Keep it under 180 words.\n\n"
         f"Player Role    : {player_role}\n"
         f"Impact Score   : {impact_score:.1f} / 100\n\n"
         f"Batting Metrics: {batting_metrics}\n"

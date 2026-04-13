@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,38 +10,29 @@
 
   <div class="page-wrapper">
 
-    <!-- ── Top Nav (theme toggle) ─────────────────────────────────────────── -->
-    <nav class="top-nav">
-      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-        <span class="toggle-icon" id="toggleIcon">☀️</span>
-        <span id="toggleLabel">Light Mode</span>
-      </button>
-    </nav>
-
-    <!-- ── Header ─────────────────────────────────────────────────────────── -->
+    <!-- ── Header ────────────────────────────────────────────────────────── -->
     <header>
-      <div class="logo-row">
-        <span class="logo-icon">🏏</span>
-        <h1>CAPE</h1>
-      </div>
-      <p>Cricket Performance Intelligence Engine</p>
-      <div class="badge-row">
-        <span class="badge badge-indigo">Parallel Analytics</span>
-        <span class="badge badge-emerald">LangGraph</span>
-        <span class="badge badge-amber">AI Powered</span>
+      <div class="header-icon">🏏</div>
+      <h1>CAPE</h1>
+      <p class="header-sub">Cricket Performance Intelligence Engine</p>
+      <div class="header-tags">
+        <span class="tag">Parallel Analytics</span>
+        <span class="tag">LangGraph</span>
+        <span class="tag">AI Powered</span>
       </div>
     </header>
 
-    <!-- ── Input Card ─────────────────────────────────────────────────────── -->
-    <div class="card">
+    <!-- ── Input Card ────────────────────────────────────────────────────── -->
+    <div class="card input-card">
 
       <div class="input-sections">
 
-        <!-- Batting Stats -->
+        <!-- Batting -->
         <div class="input-section batting-section">
-          <div class="section-title">
-            <span class="icon">🏏</span>
+          <div class="section-title batting-title">
+            <span>🏏</span>
             <h2>Batting Stats</h2>
+            <span class="optional-tag">Leave 0 if did not bat</span>
           </div>
           <div class="field-group">
             <div class="field">
@@ -50,7 +41,7 @@
             </div>
             <div class="field">
               <label for="balls">Balls Faced</label>
-              <input type="number" id="balls" min="1" placeholder="e.g. 62" />
+              <input type="number" id="balls" min="0" placeholder="e.g. 62" />
             </div>
             <div class="field">
               <label for="fours">Fours Hit</label>
@@ -63,16 +54,17 @@
           </div>
         </div>
 
-        <!-- Bowling Stats -->
+        <!-- Bowling -->
         <div class="input-section bowling-section">
-          <div class="section-title">
-            <span class="icon">🎳</span>
+          <div class="section-title bowling-title">
+            <span>🎳</span>
             <h2>Bowling Stats</h2>
+            <span class="optional-tag">Leave 0 if did not bowl</span>
           </div>
           <div class="field-group">
             <div class="field">
               <label for="overs">Overs Bowled</label>
-              <input type="number" id="overs" min="0.1" step="0.1" placeholder="e.g. 4.0" />
+              <input type="number" id="overs" min="0" step="0.1" placeholder="e.g. 4.0" />
             </div>
             <div class="field">
               <label for="runs_conceded">Runs Conceded</label>
@@ -87,36 +79,48 @@
 
       </div>
 
-      <!-- Analyze Button -->
       <button class="btn-analyze" id="analyzeBtn" onclick="analyzePlayer()">
         ⚡ Analyze Player
       </button>
 
-      <!-- Error Box -->
       <div class="error-box" id="errorBox"></div>
 
     </div>
 
-    <!-- ── Spinner ─────────────────────────────────────────────────────────── -->
+    <!-- ── Spinner ────────────────────────────────────────────────────────── -->
     <div class="spinner-wrap" id="spinner">
-      <div class="cricket-ball"></div>
-      <p>Running parallel analysis pipelines...</p>
+      <div class="cricket-scene">
+        <div class="scene-ball"></div>
+        <div class="scene-stumps">
+          <div class="stump s1"></div>
+          <div class="stump s2"></div>
+          <div class="stump s3"></div>
+          <div class="bail b1"></div>
+          <div class="bail b2"></div>
+        </div>
+      </div>
+      <div class="pipeline-stages">
+        <div class="stage">🔍 Parsing player data</div>
+        <div class="stage">🏏 Running batting analysis</div>
+        <div class="stage">🎳 Running bowling analysis</div>
+        <div class="stage">🤖 Generating AI insights</div>
+        <div class="stage">📊 Compiling scouting report</div>
+      </div>
     </div>
 
-    <!-- ── Results ─────────────────────────────────────────────────────────── -->
+    <!-- ── Results ────────────────────────────────────────────────────────── -->
     <div id="results">
 
       <!-- Impact Score + Role -->
-      <div class="card score-role-row">
-
+      <div class="card score-role-card">
         <div class="score-ring-wrap">
           <div class="score-ring">
             <svg width="140" height="140" viewBox="0 0 140 140">
               <defs>
                 <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stop-color="#6366f1" />
+                  <stop offset="0%"   stop-color="#10b981" />
                   <stop offset="50%"  stop-color="#0ea5e9" />
-                  <stop offset="100%" stop-color="#10b981" />
+                  <stop offset="100%" stop-color="#6366f1" />
                 </linearGradient>
               </defs>
               <circle class="ring-track" cx="70" cy="70" r="54" fill="none" stroke-width="10" />
@@ -135,28 +139,27 @@
           <div class="role-badge" id="roleBadge">—</div>
           <p class="role-desc" id="roleDesc"></p>
         </div>
-
       </div>
 
-      <!-- Metrics Grid -->
-      <div class="metrics-grid">
+      <!-- Metrics -->
+      <div class="metrics-grid" id="metricsGrid">
 
-        <div class="metric-card batting-card">
-          <div class="metric-card-head">
-            <span class="icon">🏏</span>
+        <div class="metric-card batting-card" id="battingCard">
+          <div class="metric-card-head batting-head">
+            <span>🏏</span>
             <h3>Batting Analysis</h3>
           </div>
           <div class="metric-rows" id="battingRows"></div>
-          <div class="insight-box" id="battingInsight"></div>
+          <div class="insight-box md-content" id="battingInsight"></div>
         </div>
 
-        <div class="metric-card bowling-card">
-          <div class="metric-card-head">
-            <span class="icon">🎳</span>
+        <div class="metric-card bowling-card" id="bowlingCard">
+          <div class="metric-card-head bowling-head">
+            <span>🎳</span>
             <h3>Bowling Analysis</h3>
           </div>
           <div class="metric-rows" id="bowlingRows"></div>
-          <div class="insight-box" id="bowlingInsight"></div>
+          <div class="insight-box md-content" id="bowlingInsight"></div>
         </div>
 
       </div>
@@ -164,10 +167,10 @@
       <!-- AI Scouting Report -->
       <div class="report-card">
         <div class="report-head">
-          <span class="icon">🤖</span>
+          <span>🤖</span>
           <h3>AI Scouting Report</h3>
         </div>
-        <div class="report-body" id="finalReport"></div>
+        <div class="report-body md-content" id="finalReport"></div>
       </div>
 
     </div>
@@ -176,6 +179,7 @@
   </div>
   <!-- end .page-wrapper -->
 
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
   <script src="/assets/main.js"></script>
 </body>
 </html>

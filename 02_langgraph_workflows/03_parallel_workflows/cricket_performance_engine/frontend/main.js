@@ -1,36 +1,8 @@
 // main.js
-// Handles form submission, API call, rendering results, and theme toggle for CAPE.
 
 const API_URL = '/analyze-player';
 
-// ── Theme Toggle ─────────────────────────────────────────────────────────────
-function toggleTheme() {
-  const html      = document.documentElement;
-  const isDark    = html.getAttribute('data-theme') === 'dark';
-  const nextTheme = isDark ? 'light' : 'dark';
-
-  html.setAttribute('data-theme', nextTheme);
-  document.getElementById('toggleIcon').textContent  = isDark ? '🌙' : '☀️';
-  document.getElementById('toggleLabel').textContent = isDark ? 'Dark Mode' : 'Light Mode';
-
-  // Persist preference so it survives page refresh
-  localStorage.setItem('cape-theme', nextTheme);
-}
-
-// Apply saved theme on load
-(function () {
-  const saved = localStorage.getItem('cape-theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    if (saved === 'light') {
-      document.getElementById('toggleIcon').textContent  = '🌙';
-      document.getElementById('toggleLabel').textContent = 'Dark Mode';
-    }
-  }
-})();
-
-// ── Role metadata ────────────────────────────────────────────────────────────
-// Maps backend role strings to display labels, icons, and descriptions.
+// ── Role metadata ─────────────────────────────────────────────────────────────
 const ROLE_META = {
   power_hitter: {
     icon : '💥',
@@ -59,7 +31,6 @@ const ROLE_META = {
   },
 };
 
-// ── Metric display labels ────────────────────────────────────────────────────
 const BATTING_LABELS = {
   strike_rate        : 'Strike Rate',
   boundary_ratio     : 'Boundary Ratio',
@@ -72,8 +43,7 @@ const BOWLING_LABELS = {
   bowling_strike_rate : 'Bowling Strike Rate',
 };
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function getVal(id) {
   return document.getElementById(id).value.trim();
 }
@@ -90,50 +60,71 @@ function clearError() {
   box.classList.remove('visible');
 }
 
-function setLoading(on) {
-  document.getElementById('analyzeBtn').disabled = on;
-  document.getElementById('spinner').classList.toggle('visible', on);
+// ── Pipeline stage animation ──────────────────────────────────────────────────
+let stageTimer;
+
+function startStages() {
+  const stages = document.querySelectorAll('.stage');
+  let idx = 0;
+  stages[idx].classList.add('active');
+  stageTimer = setInterval(() => {
+    stages[idx].classList.remove('active');
+    idx = (idx + 1) % stages.length;
+    stages[idx].classList.add('active');
+  }, 900);
 }
 
-// ── Validate inputs before sending ──────────────────────────────────────────
-function validate(fields) {
-  const ids = ['runs','balls','fours','sixes','overs','runs_conceded','wickets'];
+function stopStages() {
+  clearInterval(stageTimer);
+  document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+}
 
-  // Clear previous error highlights
+function setLoading(on) {
+  document.getElementById('analyzeBtn').disabled = on;
+  const spinner = document.getElementById('spinner');
+  if (on) {
+    spinner.classList.add('visible');
+    startStages();
+  } else {
+    spinner.classList.remove('visible');
+    stopStages();
+  }
+}
+
+// ── Validate ──────────────────────────────────────────────────────────────────
+function validate(fields) {
+  const ids = ['runs', 'balls', 'fours', 'sixes', 'overs', 'runs_conceded', 'wickets'];
   ids.forEach(id => document.getElementById(id).classList.remove('error-field'));
 
-  // At least one discipline must be active
   if (fields.balls <= 0 && fields.overs <= 0) {
     document.getElementById('balls').classList.add('error-field');
     document.getElementById('overs').classList.add('error-field');
     return 'Fill in at least one discipline: Balls Faced (batting) or Overs Bowled (bowling).';
   }
+
   for (const id of ids) {
     if (fields[id] === '' || isNaN(fields[id])) {
       document.getElementById(id).classList.add('error-field');
-      return `Please fill in "${id.replace('_', ' ')}".`;
+      return `Please fill in "${id.replace(/_/g, ' ')}".`;
     }
     if (fields[id] < 0) {
       document.getElementById(id).classList.add('error-field');
-      return `"${id.replace('_', ' ')}" cannot be negative.`;
+      return `"${id.replace(/_/g, ' ')}" cannot be negative.`;
     }
   }
   return null;
 }
 
-// ── Animate the score ring and counter ──────────────────────────────────────
+// ── Animate score ring ────────────────────────────────────────────────────────
 function animateScore(score) {
-  const arc         = document.getElementById('scoreArc');
-  const numEl       = document.getElementById('impactScoreNum');
-  const circumference = 339.29;  // 2 * π * 54
+  const arc          = document.getElementById('scoreArc');
+  const numEl        = document.getElementById('impactScoreNum');
+  const circumference = 339.29;
 
-  // Animate SVG ring fill
-  const offset = circumference - (circumference * score / 100);
-  arc.style.strokeDashoffset = offset;
+  arc.style.strokeDashoffset = circumference - (circumference * score / 100);
 
-  // Animate counter from 0 → score
   let current = 0;
-  const step  = score / 60;  // ~60 frames
+  const step  = score / 60;
   const timer = setInterval(() => {
     current = Math.min(current + step, score);
     numEl.textContent = Math.round(current);
@@ -141,22 +132,36 @@ function animateScore(score) {
   }, 16);
 }
 
-// ── Render role badge ────────────────────────────────────────────────────────
+// ── Render role badge ─────────────────────────────────────────────────────────
 function renderRole(role) {
-  const meta   = ROLE_META[role] || { icon: '❓', label: role, desc: '' };
-  const badge  = document.getElementById('roleBadge');
-  const desc   = document.getElementById('roleDesc');
+  const meta  = ROLE_META[role] || { icon: '❓', label: role, desc: '' };
+  const badge = document.getElementById('roleBadge');
+  const desc  = document.getElementById('roleDesc');
 
   badge.textContent = `${meta.icon} ${meta.label}`;
   badge.className   = `role-badge role-${role}`;
   desc.textContent  = meta.desc;
 }
 
-// ── Render a metrics card ────────────────────────────────────────────────────
-function renderMetrics(containerId, metrics, labelMap, insightId) {
-  const rows = document.getElementById(containerId);
-  rows.innerHTML = '';
+// ── Render a metric card ──────────────────────────────────────────────────────
+// Returns true if the card has data and was shown, false if hidden.
+function renderMetricCard(cardId, rowsId, metrics, labelMap, insightId) {
+  const card       = document.getElementById(cardId);
+  const insightKey = cardId === 'battingCard' ? 'batting_insight' : 'bowling_insight';
 
+  // Check if any real metric values exist (ignore the insight string)
+  const hasMetrics = Object.keys(labelMap).some(k => metrics[k] !== undefined && metrics[k] !== null);
+
+  if (!hasMetrics) {
+    card.style.display = 'none';
+    return false;
+  }
+
+  card.style.display = '';
+
+  // Render stat rows
+  const rows = document.getElementById(rowsId);
+  rows.innerHTML = '';
   for (const [key, label] of Object.entries(labelMap)) {
     const val = metrics[key];
     if (val === undefined || val === null) continue;
@@ -170,42 +175,43 @@ function renderMetrics(containerId, metrics, labelMap, insightId) {
     rows.appendChild(row);
   }
 
-  // Batting / bowling insight from LLM (stored inside the metrics dict)
-  const insightKey = containerId.includes('batting') ? 'batting_insight' : 'bowling_insight';
+  // Render insight as markdown if present
+  const insightEl   = document.getElementById(insightId);
   const insightText = metrics[insightKey];
-  const insightEl = document.getElementById(insightId);
   if (insightText) {
-    insightEl.textContent = insightText;
+    insightEl.innerHTML    = marked.parse(insightText);
     insightEl.style.display = 'block';
   } else {
     insightEl.style.display = 'none';
   }
+
+  return true;
 }
 
-// ── Render full results panel ────────────────────────────────────────────────
+// ── Render full results ───────────────────────────────────────────────────────
 function renderResults(data) {
   animateScore(data.impact_score);
   renderRole(data.player_role);
 
-  renderMetrics('battingRows', data.batting_metrics, BATTING_LABELS, 'battingInsight');
-  renderMetrics('bowlingRows', data.bowling_metrics, BOWLING_LABELS, 'bowlingInsight');
+  const hasBatting = renderMetricCard('battingCard', 'battingRows', data.batting_metrics, BATTING_LABELS, 'battingInsight');
+  const hasBowling = renderMetricCard('bowlingCard', 'bowlingRows', data.bowling_metrics, BOWLING_LABELS, 'bowlingInsight');
 
-  document.getElementById('finalReport').textContent = data.final_report;
+  // Single card → full width
+  const grid = document.getElementById('metricsGrid');
+  grid.classList.toggle('full-width', !(hasBatting && hasBowling));
+
+  // Final report rendered as markdown
+  document.getElementById('finalReport').innerHTML = marked.parse(data.final_report);
 
   const results = document.getElementById('results');
   results.classList.add('visible');
-
-  // Smooth scroll to results
-  setTimeout(() => {
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  setTimeout(() => results.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 }
 
-// ── Main function ────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────────────────
 async function analyzePlayer() {
   clearError();
 
-  // Collect field values
   const fields = {
     runs         : Number(getVal('runs')),
     balls        : Number(getVal('balls')),
@@ -216,14 +222,9 @@ async function analyzePlayer() {
     wickets      : Number(getVal('wickets')),
   };
 
-  // Validate
-  const validationError = validate(fields);
-  if (validationError) {
-    showError(validationError);
-    return;
-  }
+  const err = validate(fields);
+  if (err) { showError(err); return; }
 
-  // Hide old results, show spinner
   document.getElementById('results').classList.remove('visible');
   setLoading(true);
 
@@ -235,22 +236,20 @@ async function analyzePlayer() {
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.detail || `Server error: ${res.status}`);
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e.detail || `Server error: ${res.status}`);
     }
 
-    const data = await res.json();
-    renderResults(data);
+    renderResults(await res.json());
 
   } catch (err) {
     showError(err.message);
-
   } finally {
     setLoading(false);
   }
 }
 
-// Allow Enter key to trigger analysis from any input field
-document.addEventListener('keydown', (e) => {
+// Enter key triggers analysis
+document.addEventListener('keydown', e => {
   if (e.key === 'Enter') analyzePlayer();
 });
