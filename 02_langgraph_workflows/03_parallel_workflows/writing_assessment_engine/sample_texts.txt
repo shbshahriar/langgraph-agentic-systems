@@ -1,0 +1,176 @@
+================================================================================
+SAMPLE TEXTS FOR THE PARALLEL WRITING ASSESSMENT ENGINE
+================================================================================
+Use these to test the system at http://localhost:8000
+Each sample is paste-ready into the text area.
+================================================================================
+
+
+════════════════════════════════════════════════════════════════════════════════
+PARAGRAPH SAMPLES
+════════════════════════════════════════════════════════════════════════════════
+
+── GOOD PARAGRAPH ──────────────────────────────────────────────────────────────
+
+Daily exercise is one of the most effective habits a person can adopt for
+long-term health. Even a brisk 30-minute walk each morning lowers the risk of
+cardiovascular disease, improves insulin sensitivity, and releases endorphins
+that sharpen focus throughout the day. Beyond physical benefits, regular
+movement builds discipline — a quality that tends to carry over into diet,
+sleep, and productivity. Starting small matters more than starting perfectly;
+consistency over months outweighs any single intense session. In short, making
+movement a daily non-negotiable is among the highest-return investments anyone
+can make in their own wellbeing.
+
+── BAD PARAGRAPH ───────────────────────────────────────────────────────────────
+
+Exercise is good. Many people exercise and they feel better after. You should
+exercise every day if you can. Some people go to the gym and some people just
+walk. Walking is exercise too. There are many benefits to exercise. It is
+healthy. Scientists say it is good for you. So basically you should try to
+exercise when you have time because it is very good and important for health
+and stuff like that.
+
+
+════════════════════════════════════════════════════════════════════════════════
+ESSAY SAMPLES
+════════════════════════════════════════════════════════════════════════════════
+
+── GOOD ESSAY ──────────────────────────────────────────────────────────────────
+
+The Case for a Four-Day Work Week
+
+For decades, the five-day, forty-hour work week has been treated as an
+immutable law of professional life. Yet a growing body of evidence suggests
+that this structure is neither optimal for workers nor for the organisations
+that employ them. A permanent shift to a four-day work week would improve
+employee wellbeing, increase productivity, and reduce environmental costs —
+without sacrificing economic output.
+
+Proponents of longer hours often argue that more time at a desk equals more
+work completed. Research tells a more complicated story. A landmark trial
+conducted in Iceland between 2015 and 2019 found that productivity either
+held steady or improved when the working week was cut to 35–36 hours. Workers
+reported lower stress, reduced burnout, and better work-life balance. Microsoft
+Japan reported a 40% productivity boost after trialling a four-day schedule in
+2019. The mechanism is straightforward: people who are rested make fewer
+mistakes, collaborate more effectively, and sustain concentration for longer.
+
+Critics raise a legitimate concern about industries that depend on continuous
+coverage — healthcare, emergency services, and logistics. A blanket policy
+would indeed be impractical here. However, flexible scheduling, staggered
+shifts, and compressed hours offer workable alternatives that preserve coverage
+while still reducing total hours. The policy need not be uniform to be
+worthwhile.
+
+The environmental dividend is often overlooked in this debate. Fewer commuting
+days translate directly into lower carbon emissions. A four-day week study in
+the UK estimated a potential 21% reduction in carbon footprint from commuting
+alone — a meaningful contribution as governments struggle to meet climate
+targets.
+
+The evidence is clear: the four-day work week is not a utopian fantasy but a
+practical reform with documented benefits. Resistance rooted in tradition
+should not override data. Governments and employers willing to pilot this model
+will likely find that working less, done right, means achieving more.
+
+── BAD ESSAY ───────────────────────────────────────────────────────────────────
+
+Why I Think Social Media is Bad
+
+Social media is really bad for people and I think we should talk about it more.
+There are many reasons why social media is bad. First of all people spend too
+much time on it. I know people who are on their phones all day and that is not
+good. Also social media causes depression and anxiety. I read somewhere that
+teenagers who use social media a lot are more depressed. That is very sad.
+
+Another reason is fake news. There is a lot of fake news on social media and
+people believe it. This is a big problem. People should check if things are
+true before they share them but they don't always do that.
+
+Also people compare themselves to others on social media. Everyone posts the
+best version of their life so you think everyone else is happy and you are not.
+This makes people feel bad about themselves.
+
+So in conclusion social media is bad because of all these reasons I mentioned.
+People should use it less and spend more time in real life. The government
+should maybe do something about it. I hope people realize how bad it is soon.
+
+
+════════════════════════════════════════════════════════════════════════════════
+ARTICLE SAMPLES
+════════════════════════════════════════════════════════════════════════════════
+
+── GOOD ARTICLE ────────────────────────────────────────────────────────────────
+
+Why the World's Fastest Trains Still Can't Beat the Plane — and What It Would
+Take to Change That
+
+High-speed rail is fast. Japan's Shinkansen network moves passengers at 320
+kilometres per hour, and China's CR400 trains regularly hit 350 km/h on
+commercial routes. Yet for journeys beyond about 800 kilometres, flying remains
+the default for most travellers. Understanding why reveals a great deal about
+the economics of infrastructure — and about what governments would need to
+commit to if rail is ever to displace aviation at scale.
+
+The core problem is distance decay. A train travelling at 300 km/h still needs
+roughly three hours to cover 900 kilometres, and that figure excludes boarding
+time, security checks, and transfers. A comparable flight, when you add airport
+procedures, is often only marginally slower door-to-door — and it can reach
+destinations that no rail line serves. For a traveller flying London to Athens,
+there is simply no rail alternative that competes on time.
+
+Cost compounds the problem. High-speed rail requires dedicated track — it
+cannot share lines with slower freight or regional services without speed
+penalties. The capital cost of a single kilometre of high-speed track in Europe
+ranges from 10 to 80 million euros depending on terrain. Tunnelling through
+mountains or crossing water vastly inflates that figure. These are investments
+with multi-decade payback horizons, which makes them politically difficult even
+when economically justifiable.
+
+Where high-speed rail has succeeded, the conditions are specific: high
+population density along the corridor, city-pair distances of 200 to 800
+kilometres, and sustained government investment over decades. The Tokyo–Osaka
+route, one of the busiest in the world, meets all three criteria. The proposed
+HS2 route in the United Kingdom meets the first, partially meets the second,
+and has already seen the third erode through political reversals.
+
+For rail to genuinely challenge aviation on longer routes, three things would
+need to change simultaneously: overnight sleeper networks would need to be
+rebuilt at scale, cross-border ticketing and interoperability would need to
+become seamless, and carbon pricing would need to make flying materially more
+expensive. None of these is technically impossible. All of them are politically
+hard.
+
+The train may not beat the plane today. Whether it ever does depends less on
+engineering than on political will.
+
+── BAD ARTICLE ─────────────────────────────────────────────────────────────────
+
+Electric Cars Are the Future
+
+Electric cars are becoming more popular these days. Many people are buying them
+because they are good for the environment. Tesla is a very famous electric car
+company. Elon Musk started Tesla and now it is very successful. There are also
+other companies making electric cars now.
+
+Electric cars are good because they don't produce emissions. This is better for
+the environment. Global warming is a big problem and electric cars can help.
+Also electric cars are quiet which is nice.
+
+But electric cars have some problems too. The batteries don't last forever and
+they are expensive to replace. Also you need to charge them and charging takes
+a long time compared to getting gas. Not everywhere has charging stations yet
+which is a problem.
+
+The government is supporting electric cars in many countries. They give tax
+breaks and subsidies. This helps people buy electric cars who maybe couldn't
+afford them otherwise.
+
+In conclusion electric cars are the future of transportation. More and more
+people will buy them as the technology gets better and prices go down. It will
+be good for the planet if everyone drives electric cars someday.
+
+================================================================================
+END OF SAMPLES
+================================================================================

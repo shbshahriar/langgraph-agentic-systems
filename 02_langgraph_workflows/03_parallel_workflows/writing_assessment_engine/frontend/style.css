@@ -1,0 +1,417 @@
+/* =============================================================================
+   style.css — Styles for the Parallel Writing Assessment Engine frontend
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   RESET & BASE
+   ----------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* -----------------------------------------------------------------------------
+   LAYOUT
+   ----------------------------------------------------------------------------- */
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #a78bfa;
+    letter-spacing: -0.5px;
+}
+
+header p {
+    margin-top: 0.4rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+/* -----------------------------------------------------------------------------
+   INPUT PANEL
+   ----------------------------------------------------------------------------- */
+
+.input-panel {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-panel label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+}
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    background: #0f1117;
+    border: 1px solid #2d3148;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    line-height: 1.6;
+    padding: 0.9rem 1rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+textarea:focus {
+    border-color: #7c3aed;
+}
+
+.input-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+#word-count {
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+#submit-btn {
+    background: #7c3aed;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+#submit-btn:hover:not(:disabled) {
+    background: #6d28d9;
+}
+
+#submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------------------
+   STATUS BAR
+   ----------------------------------------------------------------------------- */
+
+#status-bar {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+    color: #94a3b8;
+}
+
+#status-bar.visible {
+    display: flex;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #2d3148;
+    border-top-color: #7c3aed;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* -----------------------------------------------------------------------------
+   ERROR BANNER
+   ----------------------------------------------------------------------------- */
+
+#error-banner {
+    display: none;
+    background: #2d1b1b;
+    border: 1px solid #7f1d1d;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    color: #fca5a5;
+    font-size: 0.88rem;
+}
+
+#error-banner.visible {
+    display: block;
+}
+
+/* -----------------------------------------------------------------------------
+   RESULTS SECTION
+   ----------------------------------------------------------------------------- */
+
+#results {
+    display: none;
+}
+
+#results.visible {
+    display: block;
+}
+
+/* -----------------------------------------------------------------------------
+   FORMAT BADGE + FINAL SCORE
+   ----------------------------------------------------------------------------- */
+
+.summary-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.format-badge {
+    background: #2d1b69;
+    border: 1px solid #4c1d95;
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #c4b5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.final-score-pill {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.88rem;
+    color: #e2e8f0;
+}
+
+.final-score-pill span {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #a78bfa;
+}
+
+/* -----------------------------------------------------------------------------
+   SCORE GRID (8 dimension cards)
+   ----------------------------------------------------------------------------- */
+
+.section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+}
+
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.score-card {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+}
+
+.score-card .dim-name {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    text-transform: capitalize;
+    margin-bottom: 0.4rem;
+}
+
+.score-card .dim-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #a78bfa;
+}
+
+.score-card .dim-value span {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+.score-bar {
+    height: 4px;
+    background: #2d3148;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.score-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+    transition: width 0.6s ease;
+}
+
+/* -----------------------------------------------------------------------------
+   ARGUMENT ANALYSIS TABLE
+   ----------------------------------------------------------------------------- */
+
+.argument-table {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.argument-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.argument-table th {
+    background: #161929;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.65rem 1rem;
+    text-align: left;
+}
+
+.argument-table td {
+    padding: 0.65rem 1rem;
+    border-top: 1px solid #2d3148;
+    color: #cbd5e1;
+}
+
+.argument-table td.value {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+/* boolean badges */
+.badge-true  { color: #4ade80; }
+.badge-false { color: #f87171; }
+
+/* -----------------------------------------------------------------------------
+   FEEDBACK REPORT SECTIONS
+   ----------------------------------------------------------------------------- */
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 640px) {
+    .feedback-grid { grid-template-columns: 1fr; }
+}
+
+.feedback-card {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.feedback-card h3 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.75rem;
+}
+
+.feedback-card.strengths  h3 { color: #4ade80; }
+.feedback-card.weaknesses h3 { color: #f87171; }
+.feedback-card.revision   h3 { color: #60a5fa; }
+.feedback-card.style      h3 { color: #fbbf24; }
+
+.feedback-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.feedback-card li {
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.feedback-card li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #4b5563;
+}
+
+/* -----------------------------------------------------------------------------
+   BAND PREDICTION
+   ----------------------------------------------------------------------------- */
+
+.band-card {
+    background: #1e2130;
+    border: 1px solid #2d3148;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.band-card h3 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.4rem;
+}
+
+.band-card p {
+    font-size: 0.92rem;
+    color: #e2e8f0;
+}

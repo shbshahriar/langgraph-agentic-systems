@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Writing Assessment Engine</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ================================================================
+         HEADER
+         ================================================================ -->
+    <header>
+        <h1>Parallel Writing Assessment Engine</h1>
+        <p>Powered by LangGraph + Claude — 9 parallel evaluators, instant structured feedback</p>
+    </header>
+
+
+    <!-- ================================================================
+         INPUT PANEL
+         ================================================================ -->
+    <div class="input-panel">
+        <label for="writing-input">Your Writing</label>
+        <textarea
+            id="writing-input"
+            placeholder="Paste your paragraph, essay, or article here..."
+            spellcheck="true"
+        ></textarea>
+
+        <div class="input-meta">
+            <span id="word-count">0 words</span>
+            <button id="submit-btn">Evaluate Writing</button>
+        </div>
+    </div>
+
+
+    <!-- ================================================================
+         STATUS BAR (shown while request is in-flight)
+         ================================================================ -->
+    <div id="status-bar">
+        <div class="spinner"></div>
+        <span id="status-msg">Running parallel evaluation...</span>
+    </div>
+
+
+    <!-- ================================================================
+         ERROR BANNER
+         ================================================================ -->
+    <div id="error-banner"></div>
+
+
+    <!-- ================================================================
+         RESULTS (hidden until response arrives)
+         ================================================================ -->
+    <div id="results">
+
+        <!-- Format + final score summary row -->
+        <div class="summary-row">
+            <div class="format-badge" id="format-badge">—</div>
+            <div class="final-score-pill">
+                Final Score: <span id="final-score">—</span> / 10
+            </div>
+        </div>
+
+
+        <!-- Dimension score cards -->
+        <p class="section-title">Dimension Scores</p>
+        <div class="score-grid" id="scores-grid">
+            <!-- Cards injected by main.js -->
+        </div>
+
+
+        <!-- Argument analysis table -->
+        <p class="section-title">Argument Analysis</p>
+        <div class="argument-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="arg-table-body">
+                    <!-- Rows injected by main.js -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Feedback report — 4 cards in a 2x2 grid -->
+        <p class="section-title">Improvement Feedback</p>
+        <div class="feedback-grid">
+
+            <div class="feedback-card strengths">
+                <h3>Strengths</h3>
+                <ul id="strengths-list"></ul>
+            </div>
+
+            <div class="feedback-card weaknesses">
+                <h3>Weaknesses</h3>
+                <ul id="weakness-list"></ul>
+            </div>
+
+            <div class="feedback-card revision">
+                <h3>Revision Plan</h3>
+                <ul id="revision-list"></ul>
+            </div>
+
+            <div class="feedback-card style">
+                <h3>Style Adjustments</h3>
+                <ul id="style-list"></ul>
+            </div>
+
+        </div>
+
+
+        <!-- Band prediction -->
+        <div class="band-card">
+            <h3>Band Prediction</h3>
+            <p id="band-text">—</p>
+        </div>
+
+    </div><!-- /#results -->
+
+</div><!-- /.container -->
+
+<script src="/static/main.js"></script>
+</body>
+</html>

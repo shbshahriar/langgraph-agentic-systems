@@ -23,7 +23,8 @@
       "Bash(cmd.exe /c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -ano ^| findstr :8000 ^| findstr LISTENING'\\) do taskkill /F /PID %a\")",
       "Bash(mkdir -p f:/shihab_work/langgraph-agentic-systems/02_langgraph_workflows/03_parallel_workflows/cricket_performance_engine/backend)",
       "Bash(mkdir -p f:/shihab_work/langgraph-agentic-systems/02_langgraph_workflows/03_parallel_workflows/cricket_performance_engine/frontend)",
-      "Bash(mkdir -p f:/shihab_work/langgraph-agentic-systems/02_langgraph_workflows/03_parallel_workflows/cricket_performance_engine/notebook)"
+      "Bash(mkdir -p f:/shihab_work/langgraph-agentic-systems/02_langgraph_workflows/03_parallel_workflows/cricket_performance_engine/notebook)",
+      "Bash(python -c ':*)"
     ]
   }
 }
