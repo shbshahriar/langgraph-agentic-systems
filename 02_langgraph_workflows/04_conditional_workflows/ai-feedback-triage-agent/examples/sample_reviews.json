@@ -1,0 +1,22 @@
+[
+  {
+    "label": "positive",
+    "review": "Absolutely love the new dashboard! The charts feel snappy and the CSV export saved my team hours this week. Whoever built this — thank you."
+  },
+  {
+    "label": "neutral",
+    "review": "The app is fine. It does what I need most of the time, but nothing really stands out one way or the other."
+  },
+  {
+    "label": "negative-bug",
+    "review": "Your checkout page crashes every time I apply a discount code. I've already lost three sales today because customers gave up and abandoned their carts."
+  },
+  {
+    "label": "negative-billing",
+    "review": "I was charged twice for my Pro subscription this month. Please refund the duplicate charge — I have the receipts ready to forward."
+  },
+  {
+    "label": "negative-critical",
+    "review": "Our entire production pipeline is down. None of our users can sign in and we are losing thousands of dollars per hour. This is completely unacceptable — fix it now."
+  }
+]
