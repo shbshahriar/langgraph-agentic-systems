@@ -188,7 +188,6 @@ input[type="number"] {
   font-size: 1.15rem;
   line-height: 1.65;
   color: var(--text);
-  white-space: pre-wrap;
   word-break: break-word;
 }
 
@@ -304,6 +303,29 @@ input[type="number"] {
   font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.6;
-  white-space: pre-wrap;
   word-break: break-word;
+}
+
+.markdown-body p { margin-bottom: 0.75em; }
+.markdown-body p:last-child { margin-bottom: 0; }
+.markdown-body strong { color: var(--text); font-weight: 600; }
+.markdown-body em { color: var(--accent-light); font-style: italic; }
+.markdown-body ul, .markdown-body ol { padding-left: 1.4em; margin-bottom: 0.75em; }
+.markdown-body li { margin-bottom: 0.25em; }
+.markdown-body blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.85em;
+  margin: 0.5em 0;
+  color: var(--muted);
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  color: var(--text);
+  margin: 0.75em 0 0.35em;
+  font-weight: 600;
+}
+.markdown-body code {
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.85em;
 }

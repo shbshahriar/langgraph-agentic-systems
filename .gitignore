@@ -82,3 +82,5 @@ secrets/
 PLAN.md
 CLAUDE.md
 .claude/
+
+node_modules/

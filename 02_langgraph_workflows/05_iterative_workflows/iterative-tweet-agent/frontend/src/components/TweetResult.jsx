@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 export default function TweetResult({ result }) {
   const [copied, setCopied] = useState(false)
@@ -39,7 +40,7 @@ export default function TweetResult({ result }) {
 
       <div style={{ marginTop: 18 }}>
         <p className="card-title">Final Tweet</p>
-        <p className="tweet-text">{result.tweet}</p>
+        <div className="tweet-text markdown-body"><ReactMarkdown>{result.tweet}</ReactMarkdown></div>
       </div>
 
       <div className="tweet-meta">
@@ -50,7 +51,7 @@ export default function TweetResult({ result }) {
 
       <div style={{ marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--border)' }}>
         <p className="card-title">Evaluator Feedback</p>
-        <p className="feedback-text">{result.feedback}</p>
+        <div className="feedback-text markdown-body"><ReactMarkdown>{result.feedback}</ReactMarkdown></div>
       </div>
     </div>
   )

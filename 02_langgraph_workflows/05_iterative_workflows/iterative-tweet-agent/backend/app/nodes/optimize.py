@@ -19,7 +19,10 @@ Re-write it as a short, viral-worthy tweet. Avoid Q&A style and stay under 280 c
 """)
     ]
 
-    response = optimizer_llm.invoke(messages).content
+    raw = optimizer_llm.invoke(messages).content
+    response = raw if isinstance(raw, str) else ''.join(
+        block['text'] for block in raw if isinstance(block, dict) and block.get('type') == 'text'
+    )
     iteration = state['iteration'] + 1
 
     return {'tweet': response, 'iteration': iteration, 'tweet_history': [response]}

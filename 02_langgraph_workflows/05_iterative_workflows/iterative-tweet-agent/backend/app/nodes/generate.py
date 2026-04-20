@@ -19,6 +19,9 @@ Rules:
 """)
     ]
 
-    response = generator_llm.invoke(messages).content
+    raw = generator_llm.invoke(messages).content
+    response = raw if isinstance(raw, str) else ''.join(
+        block['text'] for block in raw if isinstance(block, dict) and block.get('type') == 'text'
+    )
 
     return {'tweet': response, 'tweet_history': [response]}

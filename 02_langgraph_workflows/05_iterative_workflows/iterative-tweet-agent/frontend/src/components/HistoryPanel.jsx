@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown'
+
 export default function HistoryPanel({ tweetHistory, feedbackHistory }) {
   if (!tweetHistory?.length) return null
 
@@ -11,7 +13,7 @@ export default function HistoryPanel({ tweetHistory, feedbackHistory }) {
             {tweetHistory.map((tweet, i) => (
               <div className="history-item" key={i}>
                 <p className="history-item-num">v{i + 1}</p>
-                <p className="history-item-text">{tweet}</p>
+                <div className="history-item-text markdown-body"><ReactMarkdown>{tweet}</ReactMarkdown></div>
               </div>
             ))}
           </div>
@@ -22,7 +24,7 @@ export default function HistoryPanel({ tweetHistory, feedbackHistory }) {
             {feedbackHistory.map((fb, i) => (
               <div className="history-item" key={i}>
                 <p className="history-item-num">v{i + 1}</p>
-                <p className="history-item-text">{fb}</p>
+                <div className="history-item-text markdown-body"><ReactMarkdown>{fb}</ReactMarkdown></div>
               </div>
             ))}
           </div>
